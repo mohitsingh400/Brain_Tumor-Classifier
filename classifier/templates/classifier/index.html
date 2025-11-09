@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brain Tumor AI Classifier | Advanced Medical Imaging</title>
+    <link rel="stylesheet" href="/static/classifier/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="background-animation">
+        <div class="particles"></div>
+        <div class="grid-overlay"></div>
+    </div>
+
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-brain"></i>
+                <h1>Brain Tumor AI Classifier</h1>
+            </div>
+            <p class="tagline">Advanced Deep Learning Medical Imaging Analysis</p>
+        </header>
+
+        <main class="main-content">
+            <div class="upload-section">
+                <div class="upload-card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-upload"></i> Upload MRI Scan</h2>
+                        <p>Select a brain MRI image for AI-powered tumor classification</p>
+                    </div>
+                    
+                    <form id="uploadForm" class="upload-form" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="file-upload-area" id="uploadArea">
+                            <input type="file" id="imageInput" name="image" accept="image/*" required>
+                            <div class="upload-icon">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                            </div>
+                            <p class="upload-text">Drag & drop your image here or <span class="browse-link">browse</span></p>
+                            <p class="upload-hint">Supported formats: JPG, PNG, JPEG (Max 10MB)</p>
+                        </div>
+                        
+                        <div class="preview-container" id="previewContainer" style="display: none;">
+                            <img id="imagePreview" src="" alt="Preview">
+                            <button type="button" class="remove-image" id="removeImage">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+
+                        <div class="model-selection">
+                            <h3>Select AI Model</h3>
+                            <div class="model-options">
+                                <label class="model-option">
+                                    <input type="radio" name="model_type" value="vgg16" checked>
+                                    <div class="model-card">
+                                        <i class="fas fa-robot"></i>
+                                        <h4>VGG16</h4>
+                                        <p>Transfer Learning</p>
+                                        <span class="accuracy-badge">~72% Accuracy</span>
+                                    </div>
+                                </label>
+                                <label class="model-option">
+                                    <input type="radio" name="model_type" value="cnn">
+                                    <div class="model-card">
+                                        <i class="fas fa-network-wired"></i>
+                                        <h4>CNN</h4>
+                                        <p>Custom Network</p>
+                                        <span class="accuracy-badge">~27% Accuracy</span>
+                                    </div>
+                                </label>
+                                <label class="model-option">
+                                    <input type="radio" name="model_type" value="both">
+                                    <div class="model-card">
+                                        <i class="fas fa-code-branch"></i>
+                                        <h4>Both</h4>
+                                        <p>Compare Models</p>
+                                        <span class="accuracy-badge">Dual Analysis</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="predict-btn" id="predictBtn">
+                            <span class="btn-text">Analyze Image</span>
+                            <span class="btn-loader" id="btnLoader" style="display: none;">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="results-section" id="resultsSection" style="display: none;">
+                <div class="results-card">
+                    <div class="results-header">
+                        <h2><i class="fas fa-chart-line"></i> Analysis Results</h2>
+                        <button class="close-results" id="closeResults">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="results-content">
+                        <div class="prediction-main">
+                            <div class="predicted-class" id="predictedClass">
+                                <div class="class-icon">
+                                    <i class="fas fa-diagnoses"></i>
+                                </div>
+                                <div class="class-info">
+                                    <h3 id="className">-</h3>
+                                    <p class="confidence-label">Confidence Score</p>
+                                    <div class="confidence-bar">
+                                        <div class="confidence-fill" id="confidenceFill"></div>
+                                        <span class="confidence-text" id="confidenceText">0%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="predictions-breakdown">
+                            <h3>Detailed Predictions</h3>
+                            <div class="predictions-list" id="predictionsList">
+                                <!-- Predictions will be inserted here -->
+                            </div>
+                        </div>
+
+                        <div class="uploaded-image-display">
+                            <h3>Analyzed Image</h3>
+                            <div class="image-container">
+                                <img id="resultImage" src="" alt="Analyzed MRI">
+                            </div>
+                        </div>
+
+                        <div class="model-comparison" id="modelComparison" style="display: none;">
+                            <h3>Model Comparison</h3>
+                            <div class="comparison-grid" id="comparisonGrid">
+                                <!-- Comparison will be inserted here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>Powered by Deep Learning & TensorFlow | Research Project 2024</p>
+            <div class="footer-links">
+                <a href="/history"><i class="fas fa-history"></i> Prediction History</a>
+                <a href="/admin"><i class="fas fa-cog"></i> Admin Panel</a>
+            </div>
+        </footer>
+    </div>
+
+    <div class="notification" id="notification">
+        <i class="fas fa-info-circle"></i>
+        <span id="notificationText"></span>
+    </div>
+
+    <script src="/static/classifier/js/main.js"></script>
+</body>
+</html>
+

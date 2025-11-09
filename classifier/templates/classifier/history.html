@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction History | Brain Tumor AI Classifier</title>
+    <link rel="stylesheet" href="/static/classifier/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="background-animation">
+        <div class="particles"></div>
+        <div class="grid-overlay"></div>
+    </div>
+
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-brain"></i>
+                <h1>Prediction History</h1>
+            </div>
+            <a href="/" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Back to Classifier
+            </a>
+        </header>
+
+        <main class="main-content">
+            <div class="history-section">
+                <div class="history-card">
+                    <h2><i class="fas fa-history"></i> Recent Predictions</h2>
+                    
+                    <div class="predictions-grid">
+                        {% for prediction in predictions %}
+                        <div class="prediction-item">
+                            <div class="prediction-image">
+                                <img src="/media/{{ prediction.image }}" alt="MRI Scan">
+                            </div>
+                            <div class="prediction-info">
+                                <h3>{{ prediction.predicted_class }}</h3>
+                                <div class="prediction-meta">
+                                    <span class="model-badge model-{{ prediction.model_type }}">
+                                        <i class="fas fa-robot"></i> {{ prediction.model_type|upper }}
+                                    </span>
+                                    <span class="confidence-badge">
+                                        <i class="fas fa-percentage"></i> {{ prediction.confidence|floatformat:2 }}%
+                                    </span>
+                                </div>
+                                <p class="prediction-date">
+                                    <i class="fas fa-clock"></i> {{ prediction.created_at|date:"M d, Y H:i" }}
+                                </p>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="no-predictions">
+                            <i class="fas fa-inbox"></i>
+                            <p>No predictions yet. Start analyzing images to see history here.</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>Powered by Deep Learning & TensorFlow | Research Project 2024</p>
+        </footer>
+    </div>
+</body>
+</html>
+
