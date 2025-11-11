@@ -373,22 +373,11 @@ pip install --upgrade -r requirements.txt
 
 This project is part of a research project for brain tumor classification.
 
-## 👥 Contributors
-
-- Subhashis Banerjee
-
 ## 🙏 Acknowledgments
 
 - Dataset: [Brain Tumor Classification (MRI)](https://www.kaggle.com/datasets/sartajbhuvaji/brain-tumor-classification-mri) on Kaggle
 - VGG16: Pre-trained on ImageNet
 - Django Community
-
-## 📞 Support
-
-For issues or questions, please refer to:
-- `docs/TROUBLESHOOTING.md` for common issues
-- `docs/README_DJANGO.md` for Django-specific help
-- Project documentation in `docs/` directory
 
 ## 🔮 Future Enhancements
 
