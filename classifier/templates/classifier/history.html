@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prediction History | Brain Tumor AI Classifier</title>
     <link rel="stylesheet" href="/static/classifier/css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
     <div class="background-animation">
         <div class="particles"></div>
@@ -29,10 +33,10 @@
             <div class="history-section">
                 <div class="history-card">
                     <h2><i class="fas fa-history"></i> Recent Predictions</h2>
-                    
+
                     <div class="predictions-grid">
                         {% for prediction in predictions %}
-                        <div class="prediction-item">
+                        <div class="prediction-item history-item">
                             <div class="prediction-image">
                                 <img src="/media/{{ prediction.image }}" alt="MRI Scan">
                             </div>
@@ -67,5 +71,5 @@
         </footer>
     </div>
 </body>
-</html>
 
+</html>

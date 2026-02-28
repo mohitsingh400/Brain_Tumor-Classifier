@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | Brain Tumor AI Classifier</title>
+    <link rel="stylesheet" href="/static/classifier/css/style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .auth-card {
+            max-width: 450px;
+            margin: 4rem auto;
+            padding: 3rem;
+            text-align: center;
+        }
+
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-top: 2rem;
+            text-align: left;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.8rem 1rem;
+            border-radius: var(--radius-md);
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background: rgba(14, 165, 233, 0.05);
+            box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.2);
+        }
+
+        .auth-links {
+            margin-top: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .auth-links a {
+            color: var(--primary-light);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .auth-links a:hover {
+            color: #fff;
+        }
+
+        .errorlist {
+            color: var(--error-color);
+            list-style: none;
+            padding: 0;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="background-animation">
+        <div class="particles"></div>
+        <div class="grid-overlay"></div>
+    </div>
+
+    <div class="container">
+        <div class="auth-card upload-card">
+            <div class="logo">
+                <i class="fas fa-brain"></i>
+            </div>
+            <h2>Create Account</h2>
+            <p class="tagline">Medical AI Access</p>
+
+            <form method="post" class="auth-form">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                    {{ field.errors }}
+                    {% endif %}
+                </div>
+                {% endfor %}
+                <button type="submit" class="predict-btn" style="width: 100%; margin-top: 1rem;">
+                    Sign Up
+                </button>
+            </form>
+
+            <div class="auth-links">
+                Already have an account? <a href="{% url 'login' %}">Log in here</a>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

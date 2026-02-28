@@ -6,7 +6,7 @@ This module defines the database models for storing prediction results.
 from django.db import models
 import os
 from django.conf import settings
-
+from django.contrib.auth.models import User
 
 class Prediction(models.Model):
     """
@@ -20,6 +20,8 @@ class Prediction(models.Model):
     - Detailed prediction probabilities for all classes
     - Timestamp of prediction
     """
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    patient_name = models.CharField(max_length=255, default="Anonymous")
     image = models.ImageField(upload_to='predictions/')
     model_type = models.CharField(
         max_length=50,

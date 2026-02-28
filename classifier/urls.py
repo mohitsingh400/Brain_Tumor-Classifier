@@ -7,5 +7,7 @@ urlpatterns = [
     path('predict-vgg16/', views.predict_vgg16, name='predict_vgg16'),
     path('predict-cnn/', views.predict_cnn, name='predict_cnn'),
     path('history/', views.history, name='history'),
+    path('register/', views.register, name='register'),
+    path('download-report/<int:prediction_id>/', views.download_report, name='download_report'),
 ]
 

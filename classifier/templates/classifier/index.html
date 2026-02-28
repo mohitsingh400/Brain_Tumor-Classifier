@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brain Tumor AI Classifier | Advanced Medical Imaging</title>
+    <title>Brain Tumor AI Classifier | Premium Medical Imaging</title>
     <link rel="stylesheet" href="/static/classifier/css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
     <div class="background-animation">
         <div class="particles"></div>
@@ -15,13 +19,30 @@
     </div>
 
     <div class="container">
-        <header class="header">
+        <header class="header" style="display: flex; justify-content: space-between; align-items: center;">
             <div class="logo">
                 <i class="fas fa-brain"></i>
                 <h1>Brain Tumor AI Classifier</h1>
             </div>
-            <p class="tagline">Advanced Deep Learning Medical Imaging Analysis</p>
+
+            <div class="user-auth"
+                style="display: flex; gap: 1rem; align-items: center; background: rgba(0,0,0,0.2); padding: 0.5rem 1rem; border-radius: 8px;">
+                {% if user.is_authenticated %}
+                <span style="color: var(--text-secondary);"><i class="fas fa-user-md"></i> Dr. {{ user.username
+                    }}</span>
+                <form method="post" action="{% url 'logout' %}" style="margin: 0;">
+                    {% csrf_token %}
+                    <button type="submit"
+                        style="background: none; border: none; color: var(--error-color); cursor: pointer; display: flex; align-items: center; gap: 0.5rem;"><i
+                            class="fas fa-sign-out-alt"></i> Logout</button>
+                </form>
+                {% else %}
+                <a href="{% url 'login' %}" style="color: var(--primary-light); text-decoration: none;">Login</a>
+                {% endif %}
+            </div>
         </header>
+        <p class="tagline" style="text-align: left; margin-top: -10px;">Advanced Deep Learning Medical Imaging Analysis
+        </p>
 
         <main class="main-content">
             <div class="upload-section">
@@ -30,18 +51,29 @@
                         <h2><i class="fas fa-upload"></i> Upload MRI Scan</h2>
                         <p>Select a brain MRI image for AI-powered tumor classification</p>
                     </div>
-                    
+
                     <form id="uploadForm" class="upload-form" enctype="multipart/form-data">
                         {% csrf_token %}
+
+                        <div class="form-group" style="margin-bottom: 1.5rem; text-align: left;">
+                            <label for="patientName"
+                                style="display: block; margin-bottom: 0.5rem; color: var(--text-secondary); font-weight: 500;">Patient
+                                Name</label>
+                            <input type="text" id="patientName" name="patient_name"
+                                placeholder="Enter patient name (Optional)"
+                                style="width: 100%; padding: 0.8rem 1rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-color); color: var(--text-primary); border-radius: var(--radius-md); font-family: 'Inter', sans-serif;">
+                        </div>
+
                         <div class="file-upload-area" id="uploadArea">
                             <input type="file" id="imageInput" name="image" accept="image/*" required>
                             <div class="upload-icon">
                                 <i class="fas fa-cloud-upload-alt"></i>
                             </div>
-                            <p class="upload-text">Drag & drop your image here or <span class="browse-link">browse</span></p>
+                            <p class="upload-text">Drag & drop your image here or <span
+                                    class="browse-link">browse</span></p>
                             <p class="upload-hint">Supported formats: JPG, PNG, JPEG (Max 10MB)</p>
                         </div>
-                        
+
                         <div class="preview-container" id="previewContainer" style="display: none;">
                             <img id="imagePreview" src="" alt="Preview">
                             <button type="button" class="remove-image" id="removeImage">
@@ -94,13 +126,20 @@
 
             <div class="results-section" id="resultsSection" style="display: none;">
                 <div class="results-card">
-                    <div class="results-header">
-                        <h2><i class="fas fa-chart-line"></i> Analysis Results</h2>
+                    <div class="results-header"
+                        style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="display: flex; gap: 1rem; align-items: center;">
+                            <h2><i class="fas fa-chart-line"></i> Analysis Results</h2>
+                            <a id="downloadReportBtn" href="#"
+                                style="display: none; background: var(--primary-color); color: white; padding: 0.5rem 1rem; border-radius: var(--radius-sm); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: all 0.2s ease;">
+                                <i class="fas fa-file-pdf"></i> Download PDF Report
+                            </a>
+                        </div>
                         <button class="close-results" id="closeResults">
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
-                    
+
                     <div class="results-content">
                         <div class="prediction-main">
                             <div class="predicted-class" id="predictedClass">
@@ -126,9 +165,19 @@
                         </div>
 
                         <div class="uploaded-image-display">
-                            <h3>Analyzed Image</h3>
-                            <div class="image-container">
-                                <img id="resultImage" src="" alt="Analyzed MRI">
+                            <h3>Analyzed Image Dashboard</h3>
+                            <div class="image-container"
+                                style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                                <div style="flex: 1; min-width: 250px;">
+                                    <h4 style="margin-bottom: 10px; color: var(--text-color);">Original Image</h4>
+                                    <img id="resultImage" src="" alt="Analyzed MRI"
+                                        style="max-width: 100%; border-radius: 8px; border: 2px solid var(--border-color);">
+                                </div>
+                                <div id="gradcamContainer" style="display: none; flex: 1; min-width: 250px;">
+                                    <h4 style="margin-bottom: 10px; color: var(--text-color);">Grad-CAM Analysis</h4>
+                                    <img id="gradcamImage" src="" alt="Grad-CAM Heatmap"
+                                        style="max-width: 100%; border-radius: 8px; border: 2px solid var(--border-color);">
+                                </div>
                             </div>
                         </div>
 
@@ -144,7 +193,7 @@
         </main>
 
         <footer class="footer">
-            <p>Powered by Deep Learning & TensorFlow | Research Project 2024</p>
+            <p>Powered by Deep Learning & TensorFlow</p>
             <div class="footer-links">
                 <a href="/history"><i class="fas fa-history"></i> Prediction History</a>
                 <a href="/admin"><i class="fas fa-cog"></i> Admin Panel</a>
@@ -159,5 +208,5 @@
 
     <script src="/static/classifier/js/main.js"></script>
 </body>
-</html>
 
+</html>

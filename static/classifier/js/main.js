@@ -1,6 +1,6 @@
 // Main JavaScript for Brain Tumor Classifier
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const uploadArea = document.getElementById('uploadArea');
     const imageInput = document.getElementById('imageInput');
     const previewContainer = document.getElementById('previewContainer');
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Create preview
         const reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = function (e) {
             imagePreview.src = e.target.result;
             previewContainer.style.display = 'block';
             uploadArea.style.display = 'none';
@@ -135,11 +135,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function displayResults(data) {
         const prediction = data.prediction;
-        
+
+        // Expose Download Report PDF button
+        const downloadReportBtn = document.getElementById('downloadReportBtn');
+        if (downloadReportBtn && data.prediction_id) {
+            downloadReportBtn.href = `/download-report/${data.prediction_id}/`;
+            downloadReportBtn.style.display = 'inline-block';
+        }
+
         // Display main prediction
         document.getElementById('className').textContent = prediction.predicted_class;
         document.getElementById('confidenceText').textContent = `${prediction.confidence.toFixed(2)}%`;
-        
+
         // Animate confidence bar
         const confidenceFill = document.getElementById('confidenceFill');
         confidenceFill.style.width = '0%';
@@ -150,7 +157,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Display predictions breakdown
         const predictionsList = document.getElementById('predictionsList');
         predictionsList.innerHTML = '';
-        
+
         // Sort predictions by confidence
         const sortedPredictions = Object.entries(prediction.predictions)
             .sort((a, b) => b[1] - a[1]);
@@ -177,11 +184,21 @@ document.addEventListener('DOMContentLoaded', function() {
         // Display uploaded image
         document.getElementById('resultImage').src = data.image_url;
 
+        // Display Grad-CAM if available
+        const gradcamContainer = document.getElementById('gradcamContainer');
+        const gradcamImage = document.getElementById('gradcamImage');
+        if (data.gradcam_url && gradcamContainer && gradcamImage) {
+            gradcamImage.src = data.gradcam_url;
+            gradcamContainer.style.display = 'block';
+        } else if (gradcamContainer) {
+            gradcamContainer.style.display = 'none';
+        }
+
         // Display model comparison if both models were used
         if (prediction.cnn_result && prediction.vgg16_result) {
             const comparisonSection = document.getElementById('modelComparison');
             const comparisonGrid = document.getElementById('comparisonGrid');
-            
+
             comparisonGrid.innerHTML = `
                 <div class="comparison-card">
                     <h4>CNN Model</h4>
@@ -194,7 +211,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <p><strong>Confidence:</strong> ${prediction.vgg16_result.confidence.toFixed(2)}%</p>
                 </div>
             `;
-            
+
             comparisonSection.style.display = 'block';
         } else {
             document.getElementById('modelComparison').style.display = 'none';
@@ -208,7 +225,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function showNotification(message, type = 'info') {
         notificationText.textContent = message;
         notification.className = `notification show ${type}`;
-        
+
         setTimeout(() => {
             notification.classList.remove('show');
         }, 5000);
